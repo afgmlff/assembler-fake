@@ -28,8 +28,6 @@ string MontadorErrors::mensagemError(MontadorException::tipoErro error) {
             return "Instrução com o tipo de operando inválido";
         case MontadorException::TOKEN_INVALIDO:
             return "Tokens inválidos";
-        case MontadorException::DATA_FIRST:
-            return "Seção DATA deve vir antes da seção TEXT";
     }
 }
 

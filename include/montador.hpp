@@ -16,20 +16,20 @@ public:
     map<string, int> mapSimbolos = {};
 
     map<string, int> mapInstrucao = {
-            {"ADD",    1},
-            {"SUB",    2},
-            {"MULT",   3},
-            {"DIV",    4},
-            {"JMP",    5},
-            {"JMPN",   6},
-            {"JMPP",   7},
-            {"JMPZ",   8},
-            {"COPY",   9},
-            {"LOAD",   10},
-            {"STORE",  11},
-            {"INPUT",  12},
+            {"ADD", 1},
+            {"SUB", 2},
+            {"MULT", 3},
+            {"DIV", 4},
+            {"JMP", 5},
+            {"JMPN", 6},
+            {"JMPP", 7},
+            {"JMPZ", 8},
+            {"COPY", 9},
+            {"LOAD", 10},
+            {"STORE", 11},
+            {"INPUT", 12},
             {"OUTPUT", 13},
-            {"STOP",   14}
+            {"STOP", 14}
     };
 
     map<string, int> mapDiretiva = {

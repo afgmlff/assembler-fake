@@ -15,7 +15,6 @@ public:
         OPERACAO_INVALIDA,
         QUANTIDADE_OPERANDO,
         OPERANDO_INVALIDO,
-        DATA_FIRST,
         TOKEN_INVALIDO,
     } error;
 

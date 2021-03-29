@@ -57,10 +57,6 @@ void Montador::primeiraPassagem() {
             if (linha.empty()) continue;
             Linha l = coletaTermosDaLinha(linha);
 
-            if (contadorLinha == 1 and (l.operacao != "SECTION" or l.op1 != "DATA")) {
-                throw MontadorException(MontadorException::DATA_FIRST);
-            }
-
             if (!l.rotulo.empty()) { //checa se há rotulo
                 if (mapSimbolos.end() != mapSimbolos.find(l.rotulo)) {//busca na tabela se há repetido. caso afirmativo -> erro rotulo rep
 
