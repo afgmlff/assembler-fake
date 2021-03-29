@@ -21,7 +21,8 @@ DEP_FILES = $(wildcard $(DEP_PATH)/*.d)
 
 EXEC = montador
 
-ifeq ($(OS),Windows_NT)
+# if is Windows_NT on XP, 2000, 7, Vista, 10...
+ifeq ($(OS),Windows_NT) 
 
 RMDIR = rd /s /q
 RM = del

@@ -104,21 +104,19 @@ void gerarArquivoObjeto(string codigo, string filename) {
     arq->finishWrite();
 }
 
-// strip from start
+
 std::string &lstrip(std::string &s) {
-    s.erase(s.begin(), std::find_if(s.begin(), s.end(),
-                                    std::not1(std::ptr_fun<int, int>(std::isspace))));
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(),std::not1(std::ptr_fun<int, int>(std::isspace))));
     return s;
 }
 
-// strip from end
+
 std::string &rstrip(std::string &s) {
-    s.erase(std::find_if(s.rbegin(), s.rend(),
-                         std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
+    s.erase(std::find_if(s.rbegin(), s.rend(),std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
     return s;
 }
 
-// strip from both ends
+
 std::string &strip(std::string &s) {
     return lstrip(rstrip(s));
 }
