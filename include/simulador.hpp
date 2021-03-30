@@ -5,5 +5,8 @@
 #include <vector>
 #include <map>
 
+using namespace std;
+
+void imprime();
 
 #endif

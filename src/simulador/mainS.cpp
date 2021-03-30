@@ -3,7 +3,7 @@
 
 #include "../../include/simulador.hpp"
 
-using namespace std;
+
 
 int main(int argc, char **argv) {
 	if (argc < 2){
@@ -11,7 +11,9 @@ int main(int argc, char **argv) {
 		return 1;
 	}
 
-	cout << "Certo";
+	cout << "Certo\n\n";
+	imprime();
+	
 	return 0;
 
 }

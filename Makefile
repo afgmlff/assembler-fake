@@ -61,7 +61,7 @@ endif
 	$(CC) $(DEP_FLAGS) -c -o $@ $< $(DIRECTIVES)
 
 simulador: src/simulador/mainS.cpp
-		g++ -o simulador src/simulador/mainS.cpp
+		g++ -o simulador src/simulador/mainS.cpp src/simulador/simulador.cpp
 
 
 print-% : ; @echo $* = $($*)
