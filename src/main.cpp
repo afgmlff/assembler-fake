@@ -14,7 +14,7 @@ int main(int argc, char **argv) {
             Montador montador(auxArquivo.arquivoPronto);
             montador.primeiraPassagem();
             gerarArquivoObjeto(montador.segundaPassagem(), argv[1]);
-            std::cout << "Foi gerado o arquivo: " << trocarTipo(argv[1], ".obj") << std::endl;
+            std::cout << "Arquivo de saída: " << trocarTipo(argv[1], ".obj") << std::endl;
         } else {
             printf("Favor, informar arquivo para execucao do montador. Ex.: \"./montador caminho/entrada.asm\n");
             return 1;
