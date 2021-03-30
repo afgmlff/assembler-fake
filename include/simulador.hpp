@@ -34,6 +34,8 @@ private:
 
 	void arquivoParaFila();
 
+	vector<int> saidaspArquivo;
+
 public:
 	Simulador(string arquivoS);
 
