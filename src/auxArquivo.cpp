@@ -16,10 +16,11 @@ void AuxArquivo::extraiCode() {
     string linha, ultimoRotulo;
     bool printLine = true;
     int contadorLinha = 0;
-    int flag = 0;
+    int flag = 0, flagData = 0, flagText = 0;
+
     string texto = "TEXT";
+    string dataa = "DATA";
     while (!arquivo->hasEnd()) {
-        try {
 
             arquivo->getLine(&linha);
             contadorLinha++;
@@ -29,10 +30,10 @@ void AuxArquivo::extraiCode() {
             cout << l.op1;
             cout << "\n";
 
-            if(l.op1 != texto and flag == 0){
+            if(l.op1 != texto and flagText == 0){ //escreve primeiro só a seção TEXT
                 continue;
             }
-            else if (l.op1 == texto and flag == 0) flag = 1;
+            else if (l.op1 == texto and flagText == 0) flagText = 1;
 
 
             if (somenteRotulo(l)) {
@@ -58,12 +59,54 @@ void AuxArquivo::extraiCode() {
             } else {
                 printLine = true;
             }
-        } catch (MontadorException &e) {
-            errors.pushErro(e.error, linha, contadorLinha);
-            continue;
-        }
+
     }
 
+    arquivo->resetFile();
+
+    while (!arquivo->hasEnd()) {
+
+            arquivo->getLine(&linha);
+            contadorLinha++;
+            if (linha.empty()) continue;
+            Linha l = coletaTermosDaLinha(linha, false);
+
+            cout << l.op1;
+            cout << "\n";
+
+            if(l.op1 != dataa and flag == 0){ //escreve depois só a seção DATA
+                continue;
+            }
+            else if (l.op1 == dataa and flag == 0) flag = 1;
+
+            if(l.op1 == texto)
+                break;
+
+            if (somenteRotulo(l)) {
+                ultimoRotulo = l.rotulo;
+                continue;
+            } else {
+                if (!ultimoRotulo.empty()) {
+                    if (l.rotulo.empty()) {
+                        l.rotulo = ultimoRotulo;
+                    }
+                }
+                ultimoRotulo = "";
+            }
+
+            if (tabelaDeDefinicoes.end() != tabelaDeDefinicoes.find(l.op1)) {
+                l.op1 = tabelaDeDefinicoes[l.op1];
+            }
+            if (tabelaDeDefinicoes.end() != tabelaDeDefinicoes.find(l.op2)) {
+                l.op2 = tabelaDeDefinicoes[l.op2];
+            }
+            if (printLine) {
+                arquivoPronto->writeLine(linhaToString(l));
+            } else {
+                printLine = true;
+            }
+
+    }
 
     arquivo->arquivo.close();
     arquivoPronto->finishWrite();
