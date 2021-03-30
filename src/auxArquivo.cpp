@@ -16,6 +16,8 @@ void AuxArquivo::extraiCode() {
     string linha, ultimoRotulo;
     bool printLine = true;
     int contadorLinha = 0;
+    int flag = 0;
+    string texto = "TEXT";
     while (!arquivo->hasEnd()) {
         try {
 
@@ -23,6 +25,15 @@ void AuxArquivo::extraiCode() {
             contadorLinha++;
             if (linha.empty()) continue;
             Linha l = coletaTermosDaLinha(linha, false);
+
+            cout << l.op1;
+            cout << "\n";
+
+            if(l.op1 != texto and flag == 0){
+                continue;
+            }
+            else if (l.op1 == texto and flag == 0) flag = 1;
+
 
             if (somenteRotulo(l)) {
                 ultimoRotulo = l.rotulo;
@@ -52,6 +63,8 @@ void AuxArquivo::extraiCode() {
             continue;
         }
     }
+
+
     arquivo->arquivo.close();
     arquivoPronto->finishWrite();
 }
