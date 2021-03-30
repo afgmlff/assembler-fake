@@ -27,9 +27,6 @@ void AuxArquivo::extraiCode() {
             if (linha.empty()) continue;
             Linha l = coletaTermosDaLinha(linha, false);
 
-            cout << l.op1;
-            cout << "\n";
-
             if(l.op1 != texto and flagText == 0){ //escreve primeiro só a seção TEXT
                 continue;
             }
@@ -62,7 +59,7 @@ void AuxArquivo::extraiCode() {
 
     }
 
-    arquivo->resetFile();
+    arquivo->resetFile();  //reseta o arquivo para ler apenas DATA
 
     while (!arquivo->hasEnd()) {
 
@@ -70,9 +67,6 @@ void AuxArquivo::extraiCode() {
             contadorLinha++;
             if (linha.empty()) continue;
             Linha l = coletaTermosDaLinha(linha, false);
-
-            cout << l.op1;
-            cout << "\n";
 
             if(l.op1 != dataa and flag == 0){ //escreve depois só a seção DATA
                 continue;
