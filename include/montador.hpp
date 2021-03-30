@@ -18,7 +18,7 @@ public:
     map<string, int> mapInstrucao = {
             {"ADD", 1},
             {"SUB", 2},
-            {"MULT", 3},
+            {"MUL", 3},
             {"DIV", 4},
             {"JMP", 5},
             {"JMPN", 6},

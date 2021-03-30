@@ -11,19 +11,38 @@ class Simulador {
 private:
 	int filaInstrucoes[300];
 	int pc;
+	int acumulador;
+
+	map<int, string> mapInstrucaoSim = {
+    		{1, "ADD"},
+    		{2, "SUB"},
+    		{3, "MUL"},
+    		{4, "DIV"},
+    		{5, "JMP"},
+    		{6, "JMPN"},
+    		{7, "JMPP"},
+    		{8, "JMPZ"},
+    		{9, "COPY"},
+    		{10, "LOAD"},
+    		{11, "STORE"},
+    		{12, "INPUT"},
+    		{13, "OUTPUT"},
+    		{14, "STOP"},
+  };
 
 	string arquivoSim;
 
 	void arquivoParaFila();
 
 public:
-  Simulador(string arquivoS);
+	Simulador(string arquivoS);
 
-  ~Simulador();
+  	~Simulador();
 
-  void simular();
+  	void simular();
+
+  	void percorrerMapa();
 };
 
-void imprime();
 
 #endif
