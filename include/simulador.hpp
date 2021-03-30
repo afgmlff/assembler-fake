@@ -7,6 +7,23 @@
 
 using namespace std;
 
+class Simulador {
+private:
+	int filaInstrucoes[300];
+	int pc;
+
+	string arquivoSim;
+
+	void arquivoParaFila();
+
+public:
+  Simulador(string arquivoS);
+
+  ~Simulador();
+
+  void simular();
+};
+
 void imprime();
 
 #endif

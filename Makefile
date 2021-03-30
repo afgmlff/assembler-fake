@@ -61,7 +61,7 @@ endif
 	$(CC) $(DEP_FLAGS) -c -o $@ $< $(DIRECTIVES)
 
 simulador: src/simulador/mainS.cpp
-		g++ -o simulador src/simulador/mainS.cpp src/simulador/simulador.cpp
+	g++ -std=c++11 -o simulador src/simulador/mainS.cpp src/simulador/simulador.cpp 
 
 
 print-% : ; @echo $* = $($*)
@@ -83,6 +83,7 @@ run:
 clean:
 	$(RMDIR) $(BIN_PATH) $(DEP_PATH)
 	$(RM) $(EXEC)
+	$(RM) $(EXEC_S)
 
 .PRECIOUS: $(DEP_PATH)/%.D
 

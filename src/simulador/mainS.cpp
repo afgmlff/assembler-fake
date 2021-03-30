@@ -11,9 +11,9 @@ int main(int argc, char **argv) {
 		return 1;
 	}
 
-	cout << "Certo\n\n";
-	imprime();
-	
+	Simulador simulador(argv[1]);
+	simulador.simular();
+
 	return 0;
 
 }
