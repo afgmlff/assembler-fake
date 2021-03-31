@@ -22,7 +22,6 @@ public:
         this->error = error;
     }
 
-    const char *what() const noexcept override;
 };
 
 struct defErro {
@@ -58,7 +57,6 @@ public:
 
     string stackErros();
 
-    const char *what() const noexcept override;
 };
 
 

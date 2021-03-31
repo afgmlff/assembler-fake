@@ -6,10 +6,6 @@
 
 using namespace std;
 
-const char *EnumExcecao::what() const noexcept {
-    return to_string(this->error).c_str();
-}
-
 void AssembleErr::pushErro(EnumExcecao::tipoErro error, string linha, int numLinha) {
     errors.push_back((defErro) {error, linha, numLinha});
 }
@@ -55,9 +51,6 @@ string AssembleErr::collectErros() {
     return errorMessage;
 }
 
-const char *PassagemException::what() const noexcept {
-    return (this->mensagem).c_str();
-}
 
 string PassagemException::stackErros() {
     return "\nOcorreram erros durante a montagem:\n" + this->mensagem;
