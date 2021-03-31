@@ -155,6 +155,7 @@ void Simulador::percorrerMapa(){
 
 			default:
 				cout << "\nErro: Instrução não identificada.\nOpcode: " << opcode << "\nCaso o arquivo de entrada seja externo (não tenha sido gerado pelo montador), favor verificar instruções utilizadas.\n";
+				return;
 		}
 
 
