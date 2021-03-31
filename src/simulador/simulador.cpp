@@ -90,19 +90,34 @@ void Simulador::percorrerMapa(){
 			break;
 
 			case 5: //jmp
-
+				pc = enderecoOp1;
 			break;
 
 			case 6: //jmpn
-
+				if(acumulador < 0){
+					pc = enderecoOp1;
+				}
+				else{
+					pc += 2;
+				}
 			break;
 
 			case 7: //jmpp
-
+				if(acumulador > 0){
+					pc = enderecoOp1;
+				}
+				else{
+					pc += 2;
+				}
 			break;
 
 			case 8: //jmpz
-
+				if(acumulador == 0){
+					pc = enderecoOp1;
+				}
+				else{
+					pc += 2;
+				}
 			break;
 
 			case 9: //copy
