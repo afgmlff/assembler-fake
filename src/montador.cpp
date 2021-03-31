@@ -2,6 +2,7 @@
 #define MONTADOR
 
 #include "../include/montador.hpp"
+#include "../include/global.hpp"
 
 using namespace std;
 
@@ -52,7 +53,21 @@ void Montador::validaOPlinha(const Linha &linha) {
 
 void Montador::primeiraPassagem() {
     string linha;
-    int contadorPosicao = 0, contadorLinha = 0;
+    int contadorPosicao = 0, contadorLinha = 0, auxCount = 0, flagTxtS, flagDataS;
+
+    while(!arquivo->hasEnd()){
+      arquivo->getLine(&linha);
+      auxCount += 1;
+      if (linha.empty()) continue;
+      Linha l = splitLinha(linha);
+      if(l.op1 == "DATA")
+        flagDataS = 1;
+      if(l.operacao == "STOP")
+        break;
+    }
+    cout << "(montador)text section start: " << text_section_start << '\n' << "(montador)data section start: " << data_section_start << '\n';
+
+    arquivo->resetFile();
     while (!arquivo->hasEnd()) {
         try {
             arquivo->getLine(&linha);

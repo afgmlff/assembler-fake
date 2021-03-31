@@ -2,6 +2,7 @@
 #define AUX_ARQUIVO
 
 #include "../include/auxArquivo.hpp"
+#include "../include/global.hpp"
 
 using namespace std;
 
@@ -13,7 +14,8 @@ AuxArquivo::AuxArquivo(const string &nomeArquivo) {
 
 
 void AuxArquivo::extraiCode() {
-
+    data_section_start = 0;
+    text_section_start = 0;
     bool writeOut = true;
     int contadorLinha = 0;
     int flag = 0, flagData = 0, flagText = 0;
@@ -23,8 +25,20 @@ void AuxArquivo::extraiCode() {
 
             arquivo->getLine(&linha);
             contadorLinha++;
-            if (linha.empty()) continue;
+            if (linha.empty()){
+              arquivoPronto->writeLine("");
+              continue;
+            }
             Linha l = splitLinha(linha, false);
+            if(l.op1 == "DATA"){
+                data_section_start = contadorLinha;
+                cout << "\nData section starts at: " << data_section_start;
+            }
+
+            if(l.op1 == "TEXT"){
+                text_section_start = contadorLinha;
+                cout << "\nText section starts at: " << text_section_start;
+            }
 
             if(l.op1 != texto and flagText == 0){ //escreve primeiro só a seção TEXT
                 continue;

@@ -13,9 +13,12 @@ class AuxArquivo {
 public:
     AssembleErr errors;
 
+//    int data_section_start = 0;
+//    int text_section_start = 0;
+
     map<string, string> mapComponente = {};
     PFile *arquivo;
-    
+
     FileHandler *arquivoPronto;
 
 
