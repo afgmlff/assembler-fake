@@ -5,7 +5,6 @@ Matrícula: 15/0115121
 
 Disciplina: CIC 116432 – Software Básico
 
-
 # Como executar o programa
 Para a execução do programa, é necessário ambiente Ubuntu (foi desenvolvido no 16.04), g++ (foi desenvolvido na versão 5.4) e GNU Make 4.1 (para construir o projeto).
 
@@ -16,10 +15,9 @@ Como executar:
 3) Ainda na raiz, para MONTAR um arquivo exemplo basta utilizar
 
     $ ./montador <caminho/arquivo>
-    
     #ex.: ./montador test_files_asm/ex1.asm
 
-4) Assim, é gerado o arquivo ex1.obj dentro da pasta "test_files_asm", caso NÃO hajam erros na montagem.
+4) Assim, é gerado o arquivo .OBJ é gerado na mesma página do arquivo de entrada (por exemplo, ex1.obj dentro da pasta "test_files_asm"), caso NÃO hajam erros na montagem.
 5) Ainda na raiz, para SIMULAR um arquivo exemplo basta utilizar
 
     $ ./simulador <caminho/arquivo>
