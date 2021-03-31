@@ -5,24 +5,35 @@
 
 using namespace std;
 
-bool isInteger(const std::string &s) {
-    return std::regex_match(s, std::regex("-?[0-9]{0,10}"));
+std::string &lstrip(std::string &s) {
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(),std::not1(std::ptr_fun<int, int>(std::isspace))));
+    return s;
 }
+
+
+std::string &rstrip(std::string &s) {
+    s.erase(std::find_if(s.rbegin(), s.rend(),std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
+    return s;
+}
+
+
+std::string &strip(std::string &s) {
+    return lstrip(rstrip(s));
+}
+
+
 
 bool isVariavelValida(const string &variavel) {
     return variavel.size() <= 50 && regex_match(variavel, regex("^[a-zA-Z_$][a-zA-Z_$0-9]*"));
 }
 
-string toUpperCase(string str) {
-    std::transform(str.begin(), str.end(), str.begin(), ::toupper);
-    return str;
-}
 
-bool somenteRotulo(const Linha &linha) {
+
+bool isLabel(const Linha &linha) {
     return !linha.rotulo.empty() and linha.operacao.empty() and linha.op1.empty();
 }
 
-string trocarTipo(string nome, const string &terminacao) {
+string trocaExtensao(string nome, const string &terminacao) {
     if (std::string::npos == nome.find('.')) {
         return nome + '.' + terminacao;
     } else {
@@ -30,57 +41,58 @@ string trocarTipo(string nome, const string &terminacao) {
     }
 }
 
-Linha coletaTermosDaLinha(string linha, bool isToThrowErros) {
-    string elementos[4];
-    int cont = 0;
-    bool jaPulou = false;
+bool isInteger(const std::string &s) {
+    return std::regex_match(s, std::regex("-?[0-9]{0,10}"));
+}
+
+Linha splitLinha(string linha, bool detectarErro) {
+    string tokens[4];
+    int count = 0;
+    bool flag = false;
 
     linha = strip(linha); //remove espaços
-    
+
     if (string::npos == linha.find(':'))
-        cont++;
+        count++;
 
     for (char ch : linha) {
         if (ch == ';') { //tira coment
-
             break;
         }
 
-        if (cont == 4) {
-            if (isToThrowErros) {
-                throw MontadorException(MontadorException::QUANTIDADE_OPERANDO);
-            } else {
+        if (count == 4) {
+            if (detectarErro) {
+                throw EnumExcecao(EnumExcecao::QUANTIDADE_OPERANDO); //caso haja incremento apos o ultimo operando esperado
+            }
+            else {
                 break;
             }
         }
 
-        if (ch == ' ' or ch == ',' or (ch == ':' and cont == 0)) {//para o COPY
-            if (!jaPulou)
-                cont++;
-            jaPulou = true;
-        } else {
-            jaPulou = false;
-            elementos[cont] += ch;
+        if (ch == ' ' or ch == ',' or (ch == ':' and count == 0)) {//para o COPY
+            if (!flag)
+                count++;
+            flag = true;
+        }
+        else {
+            flag = false;
+            tokens[count] += ch;
         }
     }
 
-    for (auto &elemento : elementos) {
-        if (elementos[1] != "CONST") {
-
-            if (!elemento.empty() and !isVariavelValida(elemento) and isToThrowErros) {
-                throw MontadorException(MontadorException::TOKEN_INVALIDO);
+    for (auto &arg : tokens) {
+        if (tokens[1] != "CONST") {
+            if (!arg.empty() and !isVariavelValida(arg) and detectarErro) {
+                throw EnumExcecao(EnumExcecao::TOKEN_INVALIDO);
             }
         }
     }
 
-    Linha l = {toUpperCase(elementos[0]),
-               toUpperCase(elementos[1]),
-               toUpperCase(elementos[2]),
-               toUpperCase(elementos[3])};
+    Linha l = {maiusc(tokens[0]), maiusc(tokens[1]), maiusc(tokens[2]),maiusc(tokens[3])};
     return l;
 }
 
-string linhaToString(const Linha &linha) {
+string concatLine(const Linha &linha) {
     string str;
     if (!linha.rotulo.empty()) {
         str += linha.rotulo + ": ";
@@ -98,27 +110,16 @@ string linhaToString(const Linha &linha) {
     return str;
 }
 
-void gerarArquivoObjeto(string codigo, string filename) {
-    auto *arq = new PFile(trocarTipo(filename, ".obj").c_str(), true);
+void criaSaidaMontador(string codigo, string filename) {
+    auto *arq = new PFile(trocaExtensao(filename, ".obj").c_str(), true);
     arq->writeLine(codigo);
     arq->finishWrite();
 }
 
-
-std::string &lstrip(std::string &s) {
-    s.erase(s.begin(), std::find_if(s.begin(), s.end(),std::not1(std::ptr_fun<int, int>(std::isspace))));
-    return s;
+string maiusc(string str) {
+    std::transform(str.begin(), str.end(), str.begin(), ::toupper);
+    return str;
 }
 
-
-std::string &rstrip(std::string &s) {
-    s.erase(std::find_if(s.rbegin(), s.rend(),std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
-    return s;
-}
-
-
-std::string &strip(std::string &s) {
-    return lstrip(rstrip(s));
-}
 
 #endif

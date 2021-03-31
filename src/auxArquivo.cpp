@@ -13,19 +13,18 @@ AuxArquivo::AuxArquivo(const string &nomeArquivo) {
 
 
 void AuxArquivo::extraiCode() {
-    string linha, ultimoRotulo;
-    bool printLine = true;
+
+    bool writeOut = true;
     int contadorLinha = 0;
     int flag = 0, flagData = 0, flagText = 0;
+    string linha, label, texto = "TEXT", dataa = "DATA";
 
-    string texto = "TEXT";
-    string dataa = "DATA";
     while (!arquivo->hasEnd()) {
 
             arquivo->getLine(&linha);
             contadorLinha++;
             if (linha.empty()) continue;
-            Linha l = coletaTermosDaLinha(linha, false);
+            Linha l = splitLinha(linha, false);
 
             if(l.op1 != texto and flagText == 0){ //escreve primeiro só a seção TEXT
                 continue;
@@ -33,28 +32,28 @@ void AuxArquivo::extraiCode() {
             else if (l.op1 == texto and flagText == 0) flagText = 1;
 
 
-            if (somenteRotulo(l)) {
-                ultimoRotulo = l.rotulo;
+            if (isLabel(l)) {
+                label = l.rotulo;
                 continue;
             } else {
-                if (!ultimoRotulo.empty()) {
+                if (!label.empty()) {
                     if (l.rotulo.empty()) {
-                        l.rotulo = ultimoRotulo;
+                        l.rotulo = label;
                     }
                 }
-                ultimoRotulo = "";
+                label = "";
             }
 
-            if (tabelaDeDefinicoes.end() != tabelaDeDefinicoes.find(l.op1)) {
-                l.op1 = tabelaDeDefinicoes[l.op1];
+            if (mapComponente.end() != mapComponente.find(l.op1)) {
+                l.op1 = mapComponente[l.op1];
             }
-            if (tabelaDeDefinicoes.end() != tabelaDeDefinicoes.find(l.op2)) {
-                l.op2 = tabelaDeDefinicoes[l.op2];
+            if (mapComponente.end() != mapComponente.find(l.op2)) {
+                l.op2 = mapComponente[l.op2];
             }
-            if (printLine) {
-                arquivoPronto->writeLine(linhaToString(l));
+            if (writeOut) {
+                arquivoPronto->writeLine(concatLine(l));
             } else {
-                printLine = true;
+                writeOut = true;
             }
 
     }
@@ -66,7 +65,7 @@ void AuxArquivo::extraiCode() {
             arquivo->getLine(&linha);
             contadorLinha++;
             if (linha.empty()) continue;
-            Linha l = coletaTermosDaLinha(linha, false);
+            Linha l = splitLinha(linha, false);
 
             if(l.op1 != dataa and flag == 0){ //escreve depois só a seção DATA
                 continue;
@@ -76,28 +75,28 @@ void AuxArquivo::extraiCode() {
             if(l.op1 == texto)
                 break;
 
-            if (somenteRotulo(l)) {
-                ultimoRotulo = l.rotulo;
+            if (isLabel(l)) {
+                label = l.rotulo;
                 continue;
             } else {
-                if (!ultimoRotulo.empty()) {
+                if (!label.empty()) {
                     if (l.rotulo.empty()) {
-                        l.rotulo = ultimoRotulo;
+                        l.rotulo = label;
                     }
                 }
-                ultimoRotulo = "";
+                label = "";
             }
 
-            if (tabelaDeDefinicoes.end() != tabelaDeDefinicoes.find(l.op1)) {
-                l.op1 = tabelaDeDefinicoes[l.op1];
+            if (mapComponente.end() != mapComponente.find(l.op1)) {
+                l.op1 = mapComponente[l.op1];
             }
-            if (tabelaDeDefinicoes.end() != tabelaDeDefinicoes.find(l.op2)) {
-                l.op2 = tabelaDeDefinicoes[l.op2];
+            if (mapComponente.end() != mapComponente.find(l.op2)) {
+                l.op2 = mapComponente[l.op2];
             }
-            if (printLine) {
-                arquivoPronto->writeLine(linhaToString(l));
+            if (writeOut) {
+                arquivoPronto->writeLine(concatLine(l));
             } else {
-                printLine = true;
+                writeOut = true;
             }
 
     }

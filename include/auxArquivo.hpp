@@ -11,7 +11,7 @@ using namespace std;
 
 class AuxArquivo {
 public:
-    map<string, string> tabelaDeDefinicoes = {};
+    map<string, string> mapComponente = {};
     PFile *arquivo;
     FileHandler *arquivoPronto;
     MontadorErrors errors;

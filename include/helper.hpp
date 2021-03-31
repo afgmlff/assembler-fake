@@ -16,28 +16,27 @@ struct Linha {
     string op2;
 };
 
+std::string &lstrip(std::string &s);
+
+std::string &rstrip(std::string &s);
+
+std::string &strip(std::string &s);
+
 bool isInteger(const std::string &s);
 
 bool isVariavelValida(const string &variavel);
 
-string toUpperCase(string str);
 
-bool somenteRotulo(const Linha &linha);
+bool isLabel(const Linha &linha);
 
-string trocarTipo(string nome, const string &terminacao);
+string trocaExtensao(string nome, const string &terminacao);
 
-Linha coletaTermosDaLinha(string linha, bool isToThrowErros = true);
+string concatLine(const Linha &linha);
 
-string linhaToString(const Linha &linha);
+void criaSaidaMontador(string codigo, string filename);
 
-void gerarArquivoObjeto(string codigo, string filename);
+string maiusc(string str);
 
-std::string &lstrip(std::string &s);
-
-// strip from end
-std::string &rstrip(std::string &s);
-
-//strip()
-std::string &strip(std::string &s);
+Linha splitLinha(string linha, bool isToThrowErros = true);
 
 #endif

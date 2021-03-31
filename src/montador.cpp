@@ -32,18 +32,18 @@ void Montador::checkIfOperacaoValida(const Linha &linha) {
         if (linha.operacao == "CONST") {
 
             if (!isInteger(linha.op1)) {
-                throw MontadorException(MontadorException::OPERANDO_INVALIDO);
+                throw EnumExcecao(EnumExcecao::OPERANDO_INVALIDO);
             }
             isValida = isValida and isInteger(linha.op1);
         } else if (linha.operacao == "SECTION") {
             if (linha.op1 != "TEXT" and linha.op1 != "DATA") {
-                throw MontadorException(MontadorException::OPERANDO_INVALIDO);
+                throw EnumExcecao(EnumExcecao::OPERANDO_INVALIDO);
             }
             isValida = isValida and (linha.op1 == "TEXT" or linha.op1 == "DATA");
         }
     }
     if (!isValida) {
-        throw MontadorException(MontadorException::QUANTIDADE_OPERANDO);
+        throw EnumExcecao(EnumExcecao::QUANTIDADE_OPERANDO);
     }
 }
 
@@ -55,12 +55,12 @@ void Montador::primeiraPassagem() {
             arquivo->getLine(&linha);
             contadorLinha += 1;
             if (linha.empty()) continue;
-            Linha l = coletaTermosDaLinha(linha);
+            Linha l = splitLinha(linha);
 
             if (!l.rotulo.empty()) { //checa se há rotulo
                 if (mapSimbolos.end() != mapSimbolos.find(l.rotulo)) {//busca na tabela se há repetido. caso afirmativo -> erro rotulo rep
 
-                    throw MontadorException(MontadorException::ROTULO_REPETIDO);
+                    throw EnumExcecao(EnumExcecao::ROTULO_REPETIDO);
                 } else {//caso negativo -> insere rotulo
 
                     mapSimbolos[l.rotulo] = contadorPosicao;
@@ -74,10 +74,10 @@ void Montador::primeiraPassagem() {
                 if (mapDiretiva.end() != mapDiretiva.find(l.operacao)) { //procura se é diretiva existente
                     contadorPosicao += sizeInstDiretiva(l.operacao);
                 } else {
-                    throw MontadorException(MontadorException::OPERACAO_INVALIDA); //caso nao seja -> erro operacao
+                    throw EnumExcecao(EnumExcecao::OPERACAO_INVALIDA); //caso nao seja -> erro operacao
                 }
             }
-        } catch (MontadorException &e) {
+        } catch (EnumExcecao &e) {
             errors.pushErro(e.error, linha, contadorLinha);
             continue;
         }
@@ -95,12 +95,12 @@ string Montador::segundaPassagem() {
             arquivo->getLine(&linha);
             contadorLinha += 1;
             if (linha.empty()) continue;
-            Linha l = coletaTermosDaLinha(linha, false);
+            Linha l = splitLinha(linha, false);
 
             if (l.operacao != "CONST" and l.operacao != "SECTION") { //removendo possibilidade de ser diretiva
                 if ((mapSimbolos.end() == mapSimbolos.find(l.op1) and !l.op1.empty()) or (
                         mapSimbolos.end() == mapSimbolos.find(l.op2) and !l.op2.empty())) {
-                    throw MontadorException(MontadorException::ROTULO_AUSENTE);
+                    throw EnumExcecao(EnumExcecao::ROTULO_AUSENTE);
                 }
             }
 
@@ -127,17 +127,17 @@ string Montador::segundaPassagem() {
                         code += "0 ";
                     }
                 } else {
-                    throw MontadorException(MontadorException::OPERACAO_INVALIDA);
+                    throw EnumExcecao(EnumExcecao::OPERACAO_INVALIDA);
                 }
             }
-        } catch (MontadorException &e) {
+        } catch (EnumExcecao &e) {
             errors.pushErro(e.error, linha, contadorLinha);
             continue;
         }
     }
 
-    if (errors.contemErrors()) {
-        throw PassagemException("Montagem", errors.mensagemTodosErros());
+    if (errors.emptyStack()) {
+        throw PassagemException("Montagem", errors.collectErros());
     }
 
     return code;

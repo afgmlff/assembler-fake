@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class MontadorException : public std::exception {
+class EnumExcecao : public std::exception {
 public:
     enum tipoErro {
         ROTULO_AUSENTE,
@@ -18,32 +18,32 @@ public:
         TOKEN_INVALIDO,
     } error;
 
-    MontadorException(tipoErro error) : std::exception() {
+    EnumExcecao(tipoErro error) : std::exception() {
         this->error = error;
     }
 
     const char *what() const noexcept override;
 };
 
-struct MontadorError {
-    MontadorException::tipoErro code;
+struct defErro {
+    EnumExcecao::tipoErro code;
     string linha;
     int numLinha;
 };
 
 class MontadorErrors {
-    vector<MontadorError> errors;
+    vector<defErro> errors;
 public:
-    void pushErro(MontadorException::tipoErro error, string linha, int numLinha);
+    void pushErro(EnumExcecao::tipoErro error, string linha, int numLinha);
 
-    static string mensagemError(MontadorException::tipoErro);
+    static string mensagemError(EnumExcecao::tipoErro);
 
-    static string errorTipo(MontadorException::tipoErro);
+    static string classifica(EnumExcecao::tipoErro);
 
-    string mensagemTodosErros();
+    string collectErros();
 
 
-    bool contemErrors();
+    bool emptyStack();
 
 };
 
@@ -56,7 +56,7 @@ public:
         this->mensagem = mensagem;
     }
 
-    string mensagemCompleta();
+    string stackErros();
 
     const char *what() const noexcept override;
 };
