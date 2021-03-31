@@ -62,7 +62,7 @@ Linha splitLinha(string linha, bool detectarErro) {
 
         if (count == 4) {
             if (detectarErro) {
-                throw EnumExcecao(EnumExcecao::QUANTIDADE_OPERANDO); //caso haja incremento apos o ultimo operando esperado
+                throw EnumExcecao(EnumExcecao::QTD_OP_ERRADA); //caso haja incremento apos o ultimo operando esperado
             }
             else {
                 break;

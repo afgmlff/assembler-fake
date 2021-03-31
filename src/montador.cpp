@@ -25,9 +25,11 @@ void Montador::validaOPlinha(const Linha &linha) {
     bool isValida;
     if (linha.operacao == "COPY") {
         isValida = !linha.op1.empty() and !linha.op2.empty();
-    } else if (linha.operacao == "STOP" or linha.operacao == "SPACE") {
+    }
+    else if (linha.operacao == "STOP" or linha.operacao == "SPACE") {
         isValida = linha.op1.empty() and linha.op2.empty();
-    } else {
+    }
+    else {
         isValida = !linha.op1.empty() and linha.op2.empty();
         if (linha.operacao == "CONST") {
 
@@ -35,15 +37,16 @@ void Montador::validaOPlinha(const Linha &linha) {
                 throw EnumExcecao(EnumExcecao::OPERANDO_INVALIDO);
             }
             isValida = isValida and isInteger(linha.op1);
-        } else if (linha.operacao == "SECTION") {
-            if (linha.op1 != "TEXT" and linha.op1 != "DATA") {
+        }
+        else if (linha.operacao == "SECTION") {
+            if (linha.op1 != "DATA" and linha.op1 != "TEXT") {
                 throw EnumExcecao(EnumExcecao::OPERANDO_INVALIDO);
             }
-            isValida = isValida and (linha.op1 == "TEXT" or linha.op1 == "DATA");
+            isValida = isValida and (linha.op1 == "DATA" or linha.op1 == "TEXT");
         }
     }
     if (!isValida) {
-        throw EnumExcecao(EnumExcecao::QUANTIDADE_OPERANDO);
+        throw EnumExcecao(EnumExcecao::QTD_OP_ERRADA);
     }
 }
 
@@ -60,8 +63,9 @@ void Montador::primeiraPassagem() {
             if (!l.rotulo.empty()) { //checa se há rotulo
                 if (mapSimbolos.end() != mapSimbolos.find(l.rotulo)) {//busca na tabela se há repetido. caso afirmativo -> erro rotulo rep
 
-                    throw EnumExcecao(EnumExcecao::ROTULO_REPETIDO);
-                } else {//caso negativo -> insere rotulo
+                    throw EnumExcecao(EnumExcecao::DECLARACAO_ROT_REP);
+                }
+                else {//caso negativo -> insere rotulo
 
                     mapSimbolos[l.rotulo] = contadorPosicao;
                 }
@@ -69,12 +73,14 @@ void Montador::primeiraPassagem() {
 
             if (mapInstrucao.end() != mapInstrucao.find(l.operacao)) {//procura se é instrucao existente
                 contadorPosicao += sizeInstDiretiva(l.operacao);
-            } else {
+            }
+            else {
 
                 if (mapDiretiva.end() != mapDiretiva.find(l.operacao)) { //procura se é diretiva existente
                     contadorPosicao += sizeInstDiretiva(l.operacao);
-                } else {
-                    throw EnumExcecao(EnumExcecao::OPERACAO_INVALIDA); //caso nao seja -> erro operacao
+                }
+                else {
+                    throw EnumExcecao(EnumExcecao::DIRETIVA_INST_INVALID); //caso nao seja -> erro operacao
                 }
             }
         } catch (EnumExcecao &e) {
@@ -100,7 +106,7 @@ string Montador::segundaPassagem() {
             if (l.operacao != "CONST" and l.operacao != "SECTION") { //removendo possibilidade de ser diretiva
                 if ((mapSimbolos.end() == mapSimbolos.find(l.op1) and !l.op1.empty()) or (
                         mapSimbolos.end() == mapSimbolos.find(l.op2) and !l.op2.empty())) {
-                    throw EnumExcecao(EnumExcecao::ROTULO_AUSENTE);
+                    throw EnumExcecao(EnumExcecao::DECLARACAO_ROT_AUSENTE);
                 }
             }
 
@@ -116,18 +122,20 @@ string Montador::segundaPassagem() {
                 if (!l.op2.empty()) {
                     code += to_string(mapSimbolos[l.op2]) + ' ';
                 }
-            } else {
+            }
+            else {
                 if (mapDiretiva.end() != mapDiretiva.find(l.operacao)) {//localiza diretiva
                     validaOPlinha(l);
 
                     //codigo de saida p/ diretiva
                     if (l.operacao == "CONST") {
                         code += l.op1 + ' ';
-                    } else if (l.operacao == "SPACE") {
+                    }
+                    else if (l.operacao == "SPACE") {
                         code += "0 ";
                     }
                 } else {
-                    throw EnumExcecao(EnumExcecao::OPERACAO_INVALIDA);
+                    throw EnumExcecao(EnumExcecao::DIRETIVA_INST_INVALID);
                 }
             }
         } catch (EnumExcecao &e) {

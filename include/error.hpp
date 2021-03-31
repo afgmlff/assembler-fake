@@ -10,10 +10,10 @@ using namespace std;
 class EnumExcecao : public std::exception {
 public:
     enum tipoErro {
-        ROTULO_AUSENTE,
-        ROTULO_REPETIDO,
-        OPERACAO_INVALIDA,
-        QUANTIDADE_OPERANDO,
+        DECLARACAO_ROT_AUSENTE,
+        DECLARACAO_ROT_REP,
+        DIRETIVA_INST_INVALID,
+        QTD_OP_ERRADA,
         OPERANDO_INVALIDO,
         TOKEN_INVALIDO,
     } error;
@@ -31,7 +31,7 @@ struct defErro {
     int numLinha;
 };
 
-class MontadorErrors {
+class AssembleErr {
     vector<defErro> errors;
 public:
     void pushErro(EnumExcecao::tipoErro error, string linha, int numLinha);

@@ -11,10 +11,13 @@ using namespace std;
 
 class AuxArquivo {
 public:
+    AssembleErr errors;
+
     map<string, string> mapComponente = {};
     PFile *arquivo;
+    
     FileHandler *arquivoPronto;
-    MontadorErrors errors;
+
 
     explicit AuxArquivo(const string &nomeArquivo);
 

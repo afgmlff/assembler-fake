@@ -10,8 +10,11 @@
 
 class Montador {
 public:
-    FileHandler *arquivo;
-    MontadorErrors errors;
+    void primeiraPassagem();
+    //void segundaPassagem();
+    string segundaPassagem();
+
+    AssembleErr errors;
 
     map<string, int> mapSimbolos = {};
 
@@ -38,15 +41,15 @@ public:
             {"CONST",   1},
     };
 
+    FileHandler *arquivo;
+
     explicit Montador(FileHandler *fileHandler);
 
     static int sizeInstDiretiva(const string &argumento);
 
     static void validaOPlinha(const Linha &linha);
 
-    void primeiraPassagem();
 
-    string segundaPassagem();
 };
 
 #endif
