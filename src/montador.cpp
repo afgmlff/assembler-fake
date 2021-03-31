@@ -53,18 +53,17 @@ void Montador::validaOPlinha(const Linha &linha) {
 
 void Montador::primeiraPassagem() {
     string linha;
-    int contadorPosicao = 0, contadorLinha = 0, auxCount = 0, flagTxtS, flagDataS = 0, contPostText, contPostData;
+    int contadorPosicao = 0, contadorLinha = 0, auxCount = 0, flagTxtS = 0, flagDataS = 0, contPostText, contPostData;
     contPostText = text_section_start;
     contPostData = data_section_start;
 
-    cout << "(montador)text section start: " << text_section_start << '\n' << "(montador)text section start: "<< data_section_start << '\n';
+    cout << "(montador)text section start: " << text_section_start << '\n' << "(montador)data section start: "<< data_section_start << '\n';
 
     while (!arquivo->hasEnd()) {
         try {
             arquivo->getLine(&linha);
-            contadorLinha += 1;
-
-            if(flagDataS == 0){
+//            cout << linha << '\n';
+            if(flagDataS == 0 && flagTxtS == 1){
               contPostText += 1;
             }
             if(flagDataS == 1){
@@ -76,6 +75,9 @@ void Montador::primeiraPassagem() {
 
             if(l.op1 == "DATA")
               flagDataS = 1;
+
+            if(l.op1 == "TEXT")
+              flagTxtS = 1;
 
             if (!l.rotulo.empty()) { //checa se há rotulo
                 if (mapSimbolos.end() != mapSimbolos.find(l.rotulo)) {//busca na tabela se há repetido. caso afirmativo -> erro rotulo rep
@@ -125,17 +127,25 @@ string Montador::segundaPassagem() {
     while (!arquivo->hasEnd()) {
         try {
             arquivo->getLine(&linha);
-            contadorLinha += 1;
 
-            if(flagDataS == 0){
+            if(flagDataS == 0 && flagTxtS == 1){
               contPostText += 1;
             }
-            else{
+
+            if(flagDataS == 1){
               contPostData += 1;
             }
 
             if (linha.empty()) continue;
             Linha l = splitLinha(linha, false);
+
+//            cout << l.operacao << '\n';
+
+            if(l.op1 == "DATA")
+              flagDataS = 1;
+
+            if(l.op1 == "TEXT")
+              flagTxtS = 1;
 
             if (l.operacao != "CONST" and l.operacao != "SECTION") { //removendo possibilidade de ser diretiva
                 if ((mapSimbolos.end() == mapSimbolos.find(l.op1) and !l.op1.empty()) or (

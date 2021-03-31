@@ -25,11 +25,14 @@ void AuxArquivo::extraiCode() {
 
             arquivo->getLine(&linha);
             contadorLinha++;
-            if (linha.empty()){
+
+            if (linha.empty() or (lstrip(linha))[0] == ';'){
               arquivoPronto->writeLine("");
+//              cout << '\n';
               continue;
             }
             Linha l = splitLinha(linha, false);
+
             if(l.op1 == "DATA"){
                 data_section_start = contadorLinha;
 //                cout << "\nData section starts at: " << data_section_start;
@@ -45,6 +48,7 @@ void AuxArquivo::extraiCode() {
             }
             else if (l.op1 == texto and flagText == 0) flagText = 1;
 
+//            cout << linha << '\n';
 
             if (isLabel(l)) {
                 label = l.rotulo;
@@ -78,8 +82,9 @@ void AuxArquivo::extraiCode() {
 
             arquivo->getLine(&linha);
             contadorLinha++;
-            if (linha.empty()){
+            if (linha.empty() or (lstrip(linha))[0] == ';'){
               arquivoPronto->writeLine("");
+  //            cout << '\n';
               continue;
             }
             Linha l = splitLinha(linha, false);
@@ -91,6 +96,8 @@ void AuxArquivo::extraiCode() {
 
             if(l.op1 == texto)
                 break;
+
+//            cout << linha << '\n';
 
             if (isLabel(l)) {
                 label = l.rotulo;
