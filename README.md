@@ -15,12 +15,14 @@ Como executar:
 3) Ainda na raiz, para MONTAR um arquivo exemplo basta utilizar
 
     $ ./montador <caminho/arquivo>
+
     #ex.: ./montador test_files_asm/ex1.asm
 
 4) Assim, é gerado o arquivo .OBJ é gerado na mesma página do arquivo de entrada (por exemplo, ex1.obj dentro da pasta "test_files_asm"), caso NÃO hajam erros na montagem.
 5) Ainda na raiz, para SIMULAR um arquivo exemplo basta utilizar
 
     $ ./simulador <caminho/arquivo>
+
     #ex.: ./simulador test_files_asm/ex1.obj (atente-se a extenção .OBJ)
 
 6) Assim, o simulador mostrará na tela o valor de PC e ACC após cada instrução, bem como o valor de OUTPUT para instruções do tipo OUTPUT.
