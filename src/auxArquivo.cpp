@@ -32,12 +32,12 @@ void AuxArquivo::extraiCode() {
             Linha l = splitLinha(linha, false);
             if(l.op1 == "DATA"){
                 data_section_start = contadorLinha;
-                cout << "\nData section starts at: " << data_section_start;
+//                cout << "\nData section starts at: " << data_section_start;
             }
 
             if(l.op1 == "TEXT"){
                 text_section_start = contadorLinha;
-                cout << "\nText section starts at: " << text_section_start;
+//                cout << "\nText section starts at: " << text_section_start;
             }
 
             if(l.op1 != texto and flagText == 0){ //escreve primeiro só a seção TEXT
@@ -78,7 +78,10 @@ void AuxArquivo::extraiCode() {
 
             arquivo->getLine(&linha);
             contadorLinha++;
-            if (linha.empty()) continue;
+            if (linha.empty()){
+              arquivoPronto->writeLine("");
+              continue;
+            }
             Linha l = splitLinha(linha, false);
 
             if(l.op1 != dataa and flag == 0){ //escreve depois só a seção DATA

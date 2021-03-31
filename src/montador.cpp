@@ -53,27 +53,29 @@ void Montador::validaOPlinha(const Linha &linha) {
 
 void Montador::primeiraPassagem() {
     string linha;
-    int contadorPosicao = 0, contadorLinha = 0, auxCount = 0, flagTxtS, flagDataS;
+    int contadorPosicao = 0, contadorLinha = 0, auxCount = 0, flagTxtS, flagDataS = 0, contPostText, contPostData;
+    contPostText = text_section_start;
+    contPostData = data_section_start;
 
-    while(!arquivo->hasEnd()){
-      arquivo->getLine(&linha);
-      auxCount += 1;
-      if (linha.empty()) continue;
-      Linha l = splitLinha(linha);
-      if(l.op1 == "DATA")
-        flagDataS = 1;
-      if(l.operacao == "STOP")
-        break;
-    }
-    cout << "(montador)text section start: " << text_section_start << '\n' << "(montador)data section start: " << data_section_start << '\n';
+    cout << "(montador)text section start: " << text_section_start << '\n' << "(montador)text section start: "<< data_section_start << '\n';
 
-    arquivo->resetFile();
     while (!arquivo->hasEnd()) {
         try {
             arquivo->getLine(&linha);
             contadorLinha += 1;
+
+            if(flagDataS == 0){
+              contPostText += 1;
+            }
+            if(flagDataS == 1){
+              contPostData += 1;
+            }
+
             if (linha.empty()) continue;
             Linha l = splitLinha(linha);
+
+            if(l.op1 == "DATA")
+              flagDataS = 1;
 
             if (!l.rotulo.empty()) { //checa se há rotulo
                 if (mapSimbolos.end() != mapSimbolos.find(l.rotulo)) {//busca na tabela se há repetido. caso afirmativo -> erro rotulo rep
@@ -99,8 +101,14 @@ void Montador::primeiraPassagem() {
                 }
             }
         } catch (EnumExcecao &e) {
-            errors.pushErro(e.error, linha, contadorLinha);
-            continue;
+            if(flagDataS == 0){
+              errors.pushErro(e.error, linha, contPostText);
+              continue;
+            }
+            else{
+              errors.pushErro(e.error, linha, contPostData);
+              continue;
+            }
         }
     }
 
@@ -110,11 +118,22 @@ void Montador::primeiraPassagem() {
 string Montador::segundaPassagem() {
     string linha;
     string code;
-    int contadorPosicao = 0, contadorLinha = 0;
+    int contadorPosicao = 0, contadorLinha = 0, auxCount = 0, flagTxtS, flagDataS = 0, contPostText, contPostData;
+    contPostText = text_section_start;
+    contPostData = data_section_start;
+
     while (!arquivo->hasEnd()) {
         try {
             arquivo->getLine(&linha);
             contadorLinha += 1;
+
+            if(flagDataS == 0){
+              contPostText += 1;
+            }
+            else{
+              contPostData += 1;
+            }
+
             if (linha.empty()) continue;
             Linha l = splitLinha(linha, false);
 
@@ -154,8 +173,14 @@ string Montador::segundaPassagem() {
                 }
             }
         } catch (EnumExcecao &e) {
-            errors.pushErro(e.error, linha, contadorLinha);
-            continue;
+            if(flagDataS == 0){
+              errors.pushErro(e.error, linha, contPostText);
+              continue;
+            }
+            else{
+              errors.pushErro(e.error, linha, contPostData);
+              continue;
+            }
         }
     }
 
