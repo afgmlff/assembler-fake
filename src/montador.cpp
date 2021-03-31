@@ -57,7 +57,7 @@ void Montador::primeiraPassagem() {
     contPostText = text_section_start;
     contPostData = data_section_start;
 
-    cout << "(montador)text section start: " << text_section_start << '\n' << "(montador)data section start: "<< data_section_start << '\n';
+//    cout << "(montador)text section start: " << text_section_start << '\n' << "(montador)data section start: "<< data_section_start << '\n';
 
     while (!arquivo->hasEnd()) {
         try {
