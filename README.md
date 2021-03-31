@@ -1,7 +1,10 @@
 # Trabalho Prático 1
 Nome: Aécio Fernandes Galiza Magalhães
+
 Matrícula: 15/0115121
+
 Disciplina: CIC 116432 – Software Básico
+
 
 # Como executar o programa
 Para a execução do programa, é necessário ambiente Ubuntu (foi desenvolvido no 16.04), g++ (foi desenvolvido na versão 5.4) e GNU Make 4.1 (para construir o projeto).
