@@ -43,6 +43,14 @@ void Simulador::arquivoParaFila(){
 		cout << "Erro ao abrir o arquivo no simulador.\n";
 }
 
+string trocarExtensao(string nome, const string &terminacao) {
+    if (std::string::npos == nome.find('.')) {
+        return nome + '.' + terminacao;
+    } else {
+        return nome.replace(nome.find_last_of('.'), nome.length(), terminacao);
+    }
+}
+
 
 void Simulador::percorrerMapa(){
 
@@ -142,6 +150,19 @@ void Simulador::percorrerMapa(){
 	}
 
 	cout << '\n';
+	string arqOUT, stgsaida = "";
 
+	arqOUT = trocarExtensao(arquivoSim, ".out");
+	cout << "Foi gerado o arquivo: " << arqOUT << '\n';
+
+	ofstream fileout;
+	fileout.open(arqOUT);
+
+	for (auto conta : saidaspArquivo) {
+    	stgsaida.append(to_string(conta) + "\n");
+  	}
+  	stgsaida = stgsaida + '\n';
+	fileout << stgsaida;
+  	fileout.close();
 
 }

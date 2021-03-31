@@ -46,5 +46,6 @@ public:
   	void percorrerMapa();
 };
 
+string trocarExtensao(string nome, const string &terminacao);
 
 #endif
