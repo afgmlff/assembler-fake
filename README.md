@@ -13,7 +13,7 @@ Como executar:
 3) Ainda na raiz, para MONTAR um arquivo exemplo basta utilizar
 
     $ ./montador <caminho/arquivo>
-    # ex.: ./montador test_files_asm/ex1.asm
+    #ex.: ./montador test_files_asm/ex1.asm
 
 4) Assim, é gerado o arquivo ex1.obj dentro da pasta "test_files_asm", caso NÃO hajam erros na montagem.
 5) Ainda na raiz, para SIMULAR um arquivo exemplo basta utilizar
