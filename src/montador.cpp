@@ -21,7 +21,7 @@ int Montador::sizeInstDiretiva(const string &instrucao) {
     }
 };
 
-void Montador::checkIfOperacaoValida(const Linha &linha) {
+void Montador::validaOPlinha(const Linha &linha) {
     bool isValida;
     if (linha.operacao == "COPY") {
         isValida = !linha.op1.empty() and !linha.op2.empty();
@@ -106,7 +106,7 @@ string Montador::segundaPassagem() {
 
             if (mapInstrucao.end() != mapInstrucao.find(l.operacao)) {//localiza instrucao
                 contadorPosicao += sizeInstDiretiva(l.operacao);
-                checkIfOperacaoValida(l);
+                validaOPlinha(l);
 
                 //codigo de saida
                 code += to_string(mapInstrucao[l.operacao]) + ' ';
@@ -118,7 +118,7 @@ string Montador::segundaPassagem() {
                 }
             } else {
                 if (mapDiretiva.end() != mapDiretiva.find(l.operacao)) {//localiza diretiva
-                    checkIfOperacaoValida(l);
+                    validaOPlinha(l);
 
                     //codigo de saida p/ diretiva
                     if (l.operacao == "CONST") {

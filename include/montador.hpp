@@ -42,7 +42,7 @@ public:
 
     static int sizeInstDiretiva(const string &argumento);
 
-    static void checkIfOperacaoValida(const Linha &linha);
+    static void validaOPlinha(const Linha &linha);
 
     void primeiraPassagem();
 

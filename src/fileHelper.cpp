@@ -3,10 +3,14 @@
 
 #include "../include/fileHelper.hpp"
 
+bool PFile::hasEnd() {
+    return arquivo.eof();
+}
+
 void MemFile::getLine(std::string *linha) {
     if (!this->hasEnd()) {
-        *linha = arquivo[this->linhaAtual];
-        this->linhaAtual++;
+        *linha = arquivo[this->percorreL];
+        this->percorreL++;
     }
 }
 
@@ -15,21 +19,21 @@ void MemFile::writeLine(std::string linha) {
 }
 
 bool MemFile::hasEnd() {
-    return arquivo.size() == linhaAtual;
+    return arquivo.size() == percorreL;
 }
 
 void MemFile::resetFile() {
-    linhaAtual = 0;
+    percorreL = 0;
 }
 
-PFile::PFile(const char *nomeArquivo, bool modoDeEscrita) {
-    if (modoDeEscrita) {
-        arquivo.open(nomeArquivo, std::ios::out | std::ios::trunc);
+PFile::PFile(const char *file1, bool wEnable) {
+    if (!wEnable) {
+        arquivo.open(file1);
     } else {
-        arquivo.open(nomeArquivo);
+        arquivo.open(file1, std::ios::out | std::ios::trunc);
     }
     if (!arquivo)
-        throw std::invalid_argument("Arquivo não encontrado");
+        throw std::invalid_argument("O arquivo não foi encontrado.");
 }
 
 void PFile::getLine(std::string *linha) {
@@ -40,17 +44,13 @@ void PFile::writeLine(std::string linha) {
     arquivo << linha << std::endl;
 }
 
-bool PFile::hasEnd() {
-    return arquivo.eof();
+void PFile::finishWrite() {
+    arquivo.close();
 }
 
 void PFile::resetFile() {
     arquivo.clear();
     arquivo.seekg(0, std::ios::beg);
-}
-
-void PFile::finishWrite() {
-    arquivo.close();
 }
 
 #endif
